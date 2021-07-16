@@ -63,8 +63,7 @@ module.exports = {
             classes: false,
             variables: false,
         },
-    ],
-    // 'no-use-before-define': 'off', // 禁止定义前使用
+    ],// 禁止定义前使用
     '@typescript-eslint/no-use-before-define': ['error'],
 
     'no-with': 'error', // 禁用 with 语句

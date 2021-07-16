@@ -119,7 +119,7 @@ export default ({ command, mode }:ConfigEnv) => {
   const isDev = command === 'serve';
   for (const file of envFiles) {
     try {
-      fs.accessSync(file, fs.constants.F_OK);
+      fs.accessSync(file, fs.constants.F_OK);// 检验是否有权限访问这些文件
       const envConfig = dotenv.parse(fs.readFileSync(file));
       for (const k in envConfig) {
         if (Object.prototype.hasOwnProperty.call(envConfig, k)) {
