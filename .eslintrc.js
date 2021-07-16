@@ -56,15 +56,15 @@ module.exports = {
     'no-this-before-super': 'warn', // 在构造函数中禁止在调用 super()之前使用 this 或 super
     'no-undef': 'error', // 禁用未声明的变量
     'no-unexpected-multiline': 'warn', // 禁止使用令人困惑的多行表达式
-    // 'no-use-before-define': [
-    //     'warn',
-    //     {
-    //         functions: false,
-    //         classes: false,
-    //         variables: false,
-    //     },
-    // ],
-    'no-use-before-define': 'off', // 禁止定义前使用
+    'no-use-before-define': [
+        'off',
+        {
+            functions: false,
+            classes: false,
+            variables: false,
+        },
+    ],
+    // 'no-use-before-define': 'off', // 禁止定义前使用
     '@typescript-eslint/no-use-before-define': ['error'],
 
     'no-with': 'error', // 禁用 with 语句

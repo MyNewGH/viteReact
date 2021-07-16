@@ -1,16 +1,14 @@
-import type { UserConfigExport,ConfigEnv, build } from 'vite'
-import reactRefresh from '@vitejs/plugin-react-refresh'
-import legacy from '@vitejs/plugin-legacy'
-import vitePluginImp from 'vite-plugin-imp'
+import type { UserConfigExport,ConfigEnv, build } from 'vite';
+import reactRefresh from '@vitejs/plugin-react-refresh';
+import legacy from '@vitejs/plugin-legacy';
+import vitePluginImp from 'vite-plugin-imp';
 import path from "path";
-import fs from 'fs'
+import fs from 'fs';
 import dotenv from 'dotenv';
 import { minifyHtml } from "vite-plugin-html";
-import postcssPresetEnv from 'postcss-preset-env'
-const envFiles = [
-   /** default file */ `.env`,
-  /** mode file */ `.env.${process.env.NODE_ENV}`
-]
+import postcssPresetEnv from 'postcss-preset-env';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const pxToRem = require("postcss-pxtorem");
 // https://vitejs.dev/config/
 const config:UserConfigExport= {
   base:process.env.VITE_BASE_URL,
@@ -23,7 +21,7 @@ const config:UserConfigExport= {
         'iOS >= 10.3',
         '> 1%',
         'not IE 11'
-      ] //兼容不支持esm 的浏览器
+      ] // 兼容不支持esm 的浏览器
     }),
     vitePluginImp({
       libList: [
@@ -40,11 +38,12 @@ const config:UserConfigExport= {
         }
       ]
     }),
-    reactRefresh() //执行无感知热更新:
+    reactRefresh() // 执行无感知热更新:
   ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, './src'),
+      "@api": path.resolve(__dirname, './src/api'),
       "@pages": path.resolve(__dirname, './src/pages'),
       "@assets": path.resolve(__dirname, './src/assets'),
       "@components": path.resolve(__dirname, './src/components'),
@@ -63,11 +62,11 @@ const config:UserConfigExport= {
         modifyVars: {
           '@fill-body': '#fff'
         }
-    
+
       }
     },
     modules: {
-      localsConvention: 'camelCase', //模块使用驼峰命名法
+      localsConvention: 'camelCase', // 模块使用驼峰命名法
     },
     postcss:{
       plugins:[
@@ -77,7 +76,7 @@ const config:UserConfigExport= {
             },
             stage: 3
         }),
-        require("postcss-pxtorem")({
+        pxToRem({
           rootValue:32,
           propList:['*'],
           unitPrecision:5,
@@ -86,12 +85,12 @@ const config:UserConfigExport= {
       ]
     }
   },
-  
+
   server: {
     proxy: {} /* 接口地址 */,
     hmr: {
       overlay: false,
-      host: "localhost" //本地开启hmr 热更新 编译哈希值变化后就更新
+      host: "localhost" // 本地开启hmr 热更新 编译哈希值变化后就更新
     }
   },
   build: {
@@ -103,44 +102,51 @@ const config:UserConfigExport= {
       plugins: []
     }
   }
-}
+};
 // export default defineConfig(
 //  )
-/* 
+/*
   vite    等于 vite -m development，此时 command='serve',mode='development'
-   
+
 "tsc && vite build" 等于 vite -m production，此时 command='build', mode='production'
 */
 export default ({ command, mode }:ConfigEnv) => {
+  const envFiles = [
+    /** default file */ `.env`,
+    /** mode file */ `.env.${mode}`
+  ];
   const { plugins = [] } = config;
   const isDev = command === 'serve';
   for (const file of envFiles) {
     try {
-      fs.accessSync(file, fs.constants.F_OK)
-      const envConfig = dotenv.parse(fs.readFileSync(file))
+      fs.accessSync(file, fs.constants.F_OK);
+      const envConfig = dotenv.parse(fs.readFileSync(file));
       for (const k in envConfig) {
         if (Object.prototype.hasOwnProperty.call(envConfig, k)) {
-          process.env[k] = envConfig[k]
+          process.env[k] = envConfig[k];
         }
       }
     } catch (error) {
-      console.log('配置文件不存在，忽略')
+      console.log('配置文件不存在，忽略');
     }
   }
-
+  config.define = {
+    'process.env.NODE_ENV': `"${mode}"`,
+    'process.env.API_URL': `"${process.env.API_URL}"`
+  };
   /* DEV */
   if (isDev) {
     // return {
     //   // serve 独有配置
     // }
   } else {
-    config.plugins = [...plugins, minifyHtml()]
-    config.define = {
-      'process.env.NODE_ENV': '"production"'
-    }
+    config.plugins = [...plugins, minifyHtml()];
+    // config.define = {
+    //   'process.env.NODE_ENV': '"production"'
+    // };
     // return {
     //   // build 独有配置
     // }
   }
   return config;
-}
+};

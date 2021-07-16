@@ -3815,10 +3815,34 @@ uri-js@^4.2.2:
   dependencies:
     punycode "^2.1.0"
 
+urs@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.nlark.com/urs/download/urs-0.0.8.tgz#8a0e0b792073cdb7eec926d08ab1e017ffab3f66"
+  integrity sha1-ig4LeSBzzbfuySbQirHgF/+rP2Y=
+
+use-http@^1.0.21:
+  version "1.0.21"
+  resolved "https://registry.nlark.com/use-http/download/use-http-1.0.21.tgz#e2c3c83becf9c7afceed95e33f52b85f61993c61"
+  integrity sha1-4sPIO+z5x6/O7ZXjP1K4X2GZPGE=
+  dependencies:
+    urs "^0.0.8"
+    use-ssr "^1.0.24"
+    utility-types "^3.10.0"
+
+use-ssr@^1.0.24:
+  version "1.0.24"
+  resolved "https://registry.nlark.com/use-ssr/download/use-ssr-1.0.24.tgz#213a3df58f5ab9268e6fe1a57ad0a9de91e514d1"
+  integrity sha1-ITo99Y9auSaOb+GletCp3pHlFNE=
+
 util-deprecate@^1.0.2:
   version "1.0.2"
   resolved "https://registry.nlark.com/util-deprecate/download/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   integrity sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=
+
+utility-types@^3.10.0:
+  version "3.10.0"
+  resolved "https://registry.npm.taobao.org/utility-types/download/utility-types-3.10.0.tgz#ea4148f9a741015f05ed74fd615e1d20e6bed82b"
+  integrity sha1-6kFI+adBAV8F7XT9YV4dIOa+2Cs=
 
 v8-compile-cache@^2.0.3:
   version "2.3.0"
