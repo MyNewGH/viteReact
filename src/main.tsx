@@ -1,16 +1,10 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import dva from 'dva';
-import {ConfigProvider} from "antd"
-import App from './App'
-import './assets/css/init.css'
-import createHistory from 'history/createBrowserHistory'
-
+import React from 'react';
+import ReactDOM from 'react-dom';
+import '@assets/css/init.css';
+import App from './App';
 ReactDOM.render(
   <React.StrictMode>
-    <ConfigProvider>
-      <App />
-    </ConfigProvider>
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
-)
+);
