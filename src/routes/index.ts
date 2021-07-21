@@ -8,6 +8,11 @@ const routesConfig: RouteConfig[] = [
     component: loadable(() => import('@pages/home'))
   },
   {
+    path: '/',
+    exact: true,
+    component: loadable(() => import('@pages/watermark'))
+  },
+  {
     path: '/login',
     exact: true,
     component: Login

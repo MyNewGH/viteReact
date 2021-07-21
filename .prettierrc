@@ -4,7 +4,12 @@
   "bracketSpacing": true,
   "trailingComma": "none",
   "printWidth": 100,
-  "semi": false,
+  "stylusSupremacy.insertNewLineAroundImports": true,
+  "semi": true,
+  "eslint.autoFixOnSave": true,
+  "beautify.config": {
+     "brace_style": "collapse,preserve-inline"
+  },
   "overrides": [
     {
       "files": ".prettierrc",

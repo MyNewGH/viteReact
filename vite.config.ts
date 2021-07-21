@@ -1,17 +1,16 @@
-import type { UserConfigExport,ConfigEnv, build } from 'vite';
+import type { UserConfigExport, ConfigEnv, build } from 'vite';
 import reactRefresh from '@vitejs/plugin-react-refresh';
 import legacy from '@vitejs/plugin-legacy';
 import vitePluginImp from 'vite-plugin-imp';
-import path from "path";
+import path from 'path';
 import fs from 'fs';
 import dotenv from 'dotenv';
-import { minifyHtml } from "vite-plugin-html";
+import { minifyHtml } from 'vite-plugin-html';
 import postcssPresetEnv from 'postcss-preset-env';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const pxToRem = require("postcss-pxtorem");
+const pxToRem = require('postcss-pxtorem');
 // https://vitejs.dev/config/
-const config:UserConfigExport= {
-  base:process.env.VITE_BASE_URL,
+const config: UserConfigExport = {
   plugins: [
     legacy({
       targets: [
@@ -27,7 +26,7 @@ const config:UserConfigExport= {
       libList: [
         {
           /* 按需加载 antd-mobile */
-          libName: "antd-mobile",
+          libName: 'antd-mobile',
           style(name) {
             if (/CompWithoutStyleFile/i.test(name)) {
               return false;
@@ -42,18 +41,18 @@ const config:UserConfigExport= {
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, './src'),
-      "@api": path.resolve(__dirname, './src/api'),
-      "@pages": path.resolve(__dirname, './src/pages'),
-      "@assets": path.resolve(__dirname, './src/assets'),
-      "@components": path.resolve(__dirname, './src/components'),
-      "@model": path.resolve(__dirname, './src/model'),
-      "@services": path.resolve(__dirname, './src/services'),
-      "@types": path.resolve(__dirname, './src/types'),
-      "@utils": path.resolve(__dirname, './src/utils'),
+      '@': path.resolve(__dirname, './src'),
+      '@api': path.resolve(__dirname, './src/api'),
+      '@pages': path.resolve(__dirname, './src/pages'),
+      '@assets': path.resolve(__dirname, './src/assets'),
+      '@components': path.resolve(__dirname, './src/components'),
+      '@model': path.resolve(__dirname, './src/model'),
+      '@services': path.resolve(__dirname, './src/services'),
+      '@types': path.resolve(__dirname, './src/types'),
+      '@utils': path.resolve(__dirname, './src/utils')
     }
   },
-  css:{
+  css: {
     preprocessorOptions: {
       less: {
         // 支持内联 JavaScript
@@ -62,35 +61,35 @@ const config:UserConfigExport= {
         modifyVars: {
           '@fill-body': '#fff'
         }
-
       }
     },
     modules: {
-      localsConvention: 'camelCase', // 模块使用驼峰命名法
+      localsConvention: 'camelCase' // 模块使用驼峰命名法
     },
-    postcss:{
-      plugins:[
+    postcss: {
+      plugins: [
         postcssPresetEnv({
           autoprefixer: {
             flexbox: 'no-2009'
-            },
-            stage: 3
+          },
+          stage: 3
         }),
         pxToRem({
-          rootValue:32,
-          propList:['*'],
-          unitPrecision:5,
-          exclude:/(node_module)/
+          rootValue: 32,
+          propList: ['*'],
+          unitPrecision: 5,
+          exclude: /(node_module)/
         })
       ]
     }
   },
-
+  logLevel: 'info',
   server: {
+    open: true,
     proxy: {} /* 接口地址 */,
     hmr: {
       overlay: false,
-      host: "localhost" // 本地开启hmr 热更新 编译哈希值变化后就更新
+      host: 'localhost' // 本地开启hmr 热更新 编译哈希值变化后就更新
     }
   },
   build: {
@@ -110,16 +109,14 @@ const config:UserConfigExport= {
 
 "tsc && vite build" 等于 vite -m production，此时 command='build', mode='production'
 */
-export default ({ command, mode }:ConfigEnv) => {
-  const envFiles = [
-    /** default file */ `.env`,
-    /** mode file */ `.env.${mode}`
-  ];
+export default ({ command, mode }: ConfigEnv) => {
+  const envFiles = [/** default file */ `.env`, /** mode file */ `.env.${mode}`];
   const { plugins = [] } = config;
   const isDev = command === 'serve';
+
   for (const file of envFiles) {
     try {
-      fs.accessSync(file, fs.constants.F_OK);// 检验是否有权限访问这些文件
+      fs.accessSync(file, fs.constants.F_OK); // 检验是否有权限访问这些文件
       const envConfig = dotenv.parse(fs.readFileSync(file));
       for (const k in envConfig) {
         if (Object.prototype.hasOwnProperty.call(envConfig, k)) {
@@ -141,6 +138,7 @@ export default ({ command, mode }:ConfigEnv) => {
     // }
   } else {
     config.plugins = [...plugins, minifyHtml()];
+    config.base = '/app/'; // 生产环境下的公共路径
     // config.define = {
     //   'process.env.NODE_ENV': '"production"'
     // };

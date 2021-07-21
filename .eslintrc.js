@@ -6,7 +6,7 @@ module.exports = {
   },
   extends: ['alloy', 'alloy/react', 'alloy/typescript'],
   parser: '@typescript-eslint/parser',
-  plugins: ['typescript', 'react'],
+  plugins: ['typescript', 'react','@typescript-eslint'],
   env: {
     browser: true,
     node: true,
@@ -15,7 +15,7 @@ module.exports = {
   rules: {
     '@typescript-eslint/explicit-member-accessibility': 'off',
     semi: ['error', 'always'], // 该规则强制使用一致的分号
-    'no-unused-vars': 'off', // 禁止未使用过的变量
+    // 'no-unused-vars': 'off', // 禁止未使用过的变量
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off', // 生产环境禁用 debugger
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off', // 生产环境禁用 console
     'default-case': ['warn', { commentPattern: '^no default$' }], // 要求 Switch 语句中有 Default
@@ -65,7 +65,6 @@ module.exports = {
         },
     ],// 禁止定义前使用
     '@typescript-eslint/no-use-before-define': ['error'],
-
     'no-with': 'error', // 禁用 with 语句
     radix: 'error', // 禁用函数内没有 yield 的 generator 函数
     'rest-spread-spacing': ['warn', 'never'], // 强制限制扩展运算符及其表达式之间的空格
@@ -84,6 +83,7 @@ module.exports = {
     'no-undef-init': 2, // 变量初始化时不能直接给它赋值为undefined
     'no-useless-call': 2, // 禁止不必要的call和apply
     'init-declarations': 0, // 声明时必须赋初值
+    "no-unused-vars": [2, {"vars": "all", "args": "after-used"}],
     'prefer-const': 0, // 首选const
     'use-isnan': 2, // 禁止比较时使用NaN，只能用isNaN()
     'vars-on-top': 2 // var必须放在作用域顶部
